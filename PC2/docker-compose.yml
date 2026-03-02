@@ -41,6 +41,7 @@ services:
     environment:
       MAIL_USER:     ${MAIL_USER}
       MAIL_PASSWORD: ${MAIL_PASSWORD}
+      MY_DOMAIN:     ${MY_DOMAIN}
     volumes:
       - maildata:/var/mail
     networks:
