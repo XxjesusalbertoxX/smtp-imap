@@ -4,9 +4,6 @@
 //  ROUNDCUBE - config.inc.php  (PC1 - Postfix)
 // =============================================
 
-// Base de datos SQLite — mismo path que genera la imagen oficialmente
-$config['db_dsnw'] = 'sqlite:////var/roundcube/db/sqlite.db?mode=0646';
-
 // ── Servidor IMAP (Dovecot) ───────────────────────────────────────────────────
 $config['imap_host'] = 'dovecot:143';
 

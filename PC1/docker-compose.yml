@@ -67,7 +67,7 @@ services:
   #  ROUNDCUBE - Cliente Web de Correo
   # ─────────────────────────────────────────────
   roundcube:
-    image: roundcube/roundcubemail:latest
+    build: ./roundcube
     container_name: pc1_roundcube
     restart: unless-stopped
     ports:
