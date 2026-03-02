@@ -10,8 +10,8 @@ $config['imap_host'] = 'dovecot:143';
 // ── Servidor SMTP (Exim) ──────────────────────────────────────────────────────
 $config['smtp_host'] = 'exim:25';
 $config['smtp_port'] = 25;
-$config['smtp_user'] = '%u';
-$config['smtp_pass'] = '%p';
+$config['smtp_user'] = '';   // sin autenticacion SMTP (practica LAN)
+$config['smtp_pass'] = '';
 
 // ── Clave secreta de sesion (cambiar en produccion) ───────────────────────────
 $config['des_key'] = 'practica_smtp_imap_2024_rc';
