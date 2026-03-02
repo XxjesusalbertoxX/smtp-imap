@@ -31,9 +31,12 @@ message_size_limit = 10240000
 # Tabla de transporte para entregar al peer
 transport_maps = hash:/etc/postfix/transport
 
+# Dominios a los que se hace relay (el peer) — sin verificacion DNS
+relay_domains = hash:/etc/postfix/transport
+
 # Sin restricciones de relay para red local de practica
 smtpd_relay_restrictions = permit_mynetworks, permit_sasl_authenticated, defer_unauth_destination
-smtpd_recipient_restrictions = permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination
+smtpd_recipient_restrictions = permit_mynetworks, permit_sasl_authenticated, check_relay_domains, reject_unauth_destination
 
 # Logs verbosos para depuracion
 debug_peer_level = 2
