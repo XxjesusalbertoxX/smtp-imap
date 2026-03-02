@@ -25,6 +25,7 @@ cat > /etc/postfix/transport <<EOF
 ${PEER_DOMAIN}    smtp:[${PEER_IP}]:25
 EOF
 postmap /etc/postfix/transport
+echo "[postfix] Tabla de transporte compilada: $(ls -la /etc/postfix/transport.lmdb 2>/dev/null || echo 'ERROR: no se creo transport.lmdb')"
 
 # ── 4. Asegurar que /etc/hosts resuelva los dominios ─────────────────────────
 echo "[postfix] Agregando entradas en /etc/hosts"
