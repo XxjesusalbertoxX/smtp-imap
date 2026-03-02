@@ -4,7 +4,6 @@ RUN apk add --no-cache \
     postfix \
     postfix-pcre \
     cyrus-sasl \
-    cyrus-sasl-plain \
     gettext \
     bash \
     shadow
