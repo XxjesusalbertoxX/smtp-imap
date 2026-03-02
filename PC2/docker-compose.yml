@@ -54,8 +54,7 @@ services:
     container_name: pc2_roundcube
     restart: unless-stopped
     ports:
-      # En produccion (PC2 real con su propio puerto 80): cambiar a "80:80"
-      - "8080:80"
+      - "80:80"
     environment:
       ROUNDCUBEMAIL_SKIN:         elastic
       ROUNDCUBEMAIL_DEFAULT_HOST: dovecot
