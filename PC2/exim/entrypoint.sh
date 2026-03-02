@@ -58,10 +58,15 @@ echo "[exim] Agregando entradas en /etc/hosts"
 echo "${MY_IP}    ${MY_DOMAIN}"   >> /etc/hosts
 echo "${PEER_IP}  ${PEER_DOMAIN}" >> /etc/hosts
 
-# ── 5. Crear directorio de spool ─────────────────────────────────────────────
+# ── 5. Crear directorio de spool y logs ──────────────────────────────────────
 mkdir -p /var/spool/exim/input /var/spool/exim/db /var/spool/exim/msglog
 chown -R exim:exim /var/spool/exim 2>/dev/null || true
+mkdir -p /var/log/exim
+chown exim:exim /var/log/exim
 
 # ── 6. Iniciar Exim en primer plano ──────────────────────────────────────────
 echo "[exim] Arrancando exim..."
+# Tail de logs a stdout para que docker logs funcione
+touch /var/log/exim/mainlog /var/log/exim/paniclog /var/log/exim/rejectlog
+tail -F /var/log/exim/mainlog /var/log/exim/paniclog /var/log/exim/rejectlog &
 exec exim -bdf -q30m
