@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  mailserver:
+    image: mailserver/docker-mailserver:latest
+    container_name: mailserver
+    hostname: mail
+    domainname: example.com  # Change to your actual mail domain
+    ports:
+      - "25:25"       # SMTP
+      - "143:143"     # IMAP
+      - "587:587"     # SMTP (submission)
+      - "993:993"     # IMAPS
+    volumes:
+      - maildata:/var/mail
+      - mailstate:/var/mail-state
+      - maillogs:/var/log/mail
+      - ./config/:/tmp/docker-mailserver/  # Create this directory and add mail accounts/config files
+    environment:
+      - ENABLE_SPAMASSASSIN=0
+      - ENABLE_CLAMAV=0
+      - ENABLE_FAIL2BAN=0
+      - ENABLE_POSTGREY=0
+      - ONE_DIR=1
+      - DMS_DEBUG=0
+    cap_add:
+      - NET_ADMIN
+    restart: unless-stopped
+
+volumes:
+  maildata:
+  mailstate:
+  maillogs:
