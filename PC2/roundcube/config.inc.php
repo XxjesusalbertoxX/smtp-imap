@@ -20,8 +20,9 @@ $config['des_key'] = 'practica_smtp_imap_2024_rc';
 $config['product_name'] = 'Correo Practica - PC2 (Exim)';
 
 // ── Dominio por defecto en el login ──────────────────────────────────────────
-// Deshabilitado: el usuario escribe solo su nombre (ej: alumno2) sin @dominio
-// $config['username_domain'] = '';
+// Roundcube agrega @MY_DOMAIN al usuario para formar sebillas@dolly.lat
+// Dovecot acepta ambas formas (con y sin dominio)
+$config['username_domain'] = getenv('MY_DOMAIN') ?: 'pc2.lab.local';
 
 // ── Plugins habilitados ───────────────────────────────────────────────────────
 $config['plugins'] = ['archive', 'zipdownload', 'markasjunk'];

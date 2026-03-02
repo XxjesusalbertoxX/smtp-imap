@@ -19,11 +19,13 @@ mkdir -p "${MAILDIR}/cur" "${MAILDIR}/new" "${MAILDIR}/tmp"
 chown -R vmail:vmail "/var/mail/${MAIL_USER}"
 
 # ── 3. Crear archivo de usuarios para autenticacion ─────────────────────────
-# Formato: usuario:{PLAIN}contraseña:uid:gid::/var/mail/usuario::
+# Registrar con y sin dominio para que Roundcube pueda autenticar
+# tanto como "sebillas" como "sebillas@dolly.lat"
 echo "[dovecot] Registrando usuario ${MAIL_USER} en base de autenticacion"
 mkdir -p /etc/dovecot
 cat > /etc/dovecot/users <<EOF
 ${MAIL_USER}:{PLAIN}${MAIL_PASSWORD}:5000:5000::/var/mail/${MAIL_USER}::
+${MAIL_USER}@${MY_DOMAIN}:{PLAIN}${MAIL_PASSWORD}:5000:5000::/var/mail/${MAIL_USER}::
 EOF
 chmod 600 /etc/dovecot/users
 
