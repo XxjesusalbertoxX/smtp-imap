@@ -1,0 +1,39 @@
+# =============================================
+#  POSTFIX - main.cf (plantilla con envsubst)
+# =============================================
+
+# Identidad del servidor
+myhostname = ${MY_DOMAIN}
+mydomain   = ${MY_DOMAIN}
+myorigin   = $mydomain
+
+# Interfaces y redes permitidas
+inet_interfaces = all
+inet_protocols  = ipv4
+mynetworks      = 0.0.0.0/0
+
+# Destinos locales (correo que se entrega aqui)
+mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
+
+# Directorio de colas y datos
+queue_directory  = /var/spool/postfix
+data_directory   = /var/lib/postfix
+
+# Entrega local via Dovecot LMTP
+mailbox_transport = lmtp:inet:dovecot:24
+
+# Banner
+smtpd_banner = $myhostname ESMTP
+
+# Tamano maximo de mensaje (10 MB)
+message_size_limit = 10240000
+
+# Tabla de transporte para entregar al peer
+transport_maps = hash:/etc/postfix/transport
+
+# Sin restricciones de relay para red local de practica
+smtpd_relay_restrictions = permit_mynetworks, permit_sasl_authenticated, defer_unauth_destination
+smtpd_recipient_restrictions = permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination
+
+# Logs verbosos para depuracion
+debug_peer_level = 2

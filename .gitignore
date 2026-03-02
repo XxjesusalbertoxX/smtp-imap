@@ -1,0 +1,11 @@
+# Archivos .env con datos reales de cada alumno (nunca subir al repo)
+PC1/.env
+PC2/.env
+
+# Directorios generados por Docker
+PC1/postfix/transport.db
+PC2/exim/exim.conf
+
+# Datos persistentes montados localmente (si se usan bind mounts)
+maildata/
+rcdata/

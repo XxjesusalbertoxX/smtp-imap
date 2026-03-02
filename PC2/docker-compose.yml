@@ -1,0 +1,94 @@
+# =====================================================================
+#  PC2 - docker-compose.yml
+#  Servicios: Exim (SMTP) + Dovecot (IMAP) + Roundcube (Web)
+# =====================================================================
+
+services:
+
+  # ─────────────────────────────────────────────
+  #  EXIM - Servidor SMTP
+  # ─────────────────────────────────────────────
+  exim:
+    build: ./exim
+    container_name: pc2_exim
+    restart: unless-stopped
+    ports:
+      - "25:25"
+    environment:
+      MY_IP:         ${MY_IP}
+      MY_DOMAIN:     ${MY_DOMAIN}
+      PEER_IP:       ${PEER_IP}
+      PEER_DOMAIN:   ${PEER_DOMAIN}
+      MAIL_USER:     ${MAIL_USER}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+    networks:
+      mailnet:
+        aliases:
+          - exim
+    extra_hosts:
+      - "${MY_DOMAIN}:${MY_IP}"
+      - "${PEER_DOMAIN}:${PEER_IP}"
+
+  # ─────────────────────────────────────────────
+  #  DOVECOT - Servidor IMAP + entrega local (LMTP)
+  # ─────────────────────────────────────────────
+  dovecot:
+    build: ./dovecot
+    container_name: pc2_dovecot
+    restart: unless-stopped
+    ports:
+      - "143:143"
+    environment:
+      MAIL_USER:     ${MAIL_USER}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+    volumes:
+      - maildata:/var/mail
+    networks:
+      - mailnet
+
+  # ─────────────────────────────────────────────
+  #  ROUNDCUBE - Cliente Web de Correo
+  # ─────────────────────────────────────────────
+  roundcube:
+    image: roundcube/roundcubemail:latest
+    container_name: pc2_roundcube
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    environment:
+      ROUNDCUBEMAIL_DB_TYPE:      sqlite
+      ROUNDCUBEMAIL_SKIN:         elastic
+      ROUNDCUBEMAIL_DEFAULT_HOST: dovecot
+      ROUNDCUBEMAIL_DEFAULT_PORT: 143
+      ROUNDCUBEMAIL_SMTP_SERVER:  exim
+      ROUNDCUBEMAIL_SMTP_PORT:    25
+      MY_DOMAIN:                  ${MY_DOMAIN}
+    volumes:
+      - ./roundcube/config.inc.php:/var/roundcube/config/config.inc.php
+      - rcdata:/var/roundcube/db
+    depends_on:
+      - dovecot
+      - exim
+    networks:
+      mailnet:
+        aliases:
+          - roundcube
+    extra_hosts:
+      - "${MY_DOMAIN}:${MY_IP}"
+      - "${PEER_DOMAIN}:${PEER_IP}"
+
+# ─────────────────────────────────────────────
+#  Redes
+# ─────────────────────────────────────────────
+networks:
+  mailnet:
+    driver: bridge
+
+# ─────────────────────────────────────────────
+#  Volumenes persistentes
+# ─────────────────────────────────────────────
+volumes:
+  maildata:
+    driver: local
+  rcdata:
+    driver: local
