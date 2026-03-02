@@ -20,9 +20,8 @@ $config['des_key'] = 'practica_smtp_imap_2024_rc';
 $config['product_name'] = 'Correo Practica - PC1 (Postfix)';
 
 // ── Dominio por defecto en el login ──────────────────────────────────────────
-// Se inyecta via variable de entorno ROUNDCUBE_DEFAULT_HOST en el compose
-// y se puede sobreescribir aqui si se desea hardcodearlo
-$config['username_domain'] = getenv('MY_DOMAIN') ?: 'pc1.lab.local';
+// Deshabilitado: el usuario escribe solo su nombre (ej: jesusin) sin @dominio
+// $config['username_domain'] = '';
 
 // ── Plugins habilitados ───────────────────────────────────────────────────────
 $config['plugins'] = ['archive', 'zipdownload', 'markasjunk'];

@@ -20,7 +20,8 @@ $config['des_key'] = 'practica_smtp_imap_2024_rc';
 $config['product_name'] = 'Correo Practica - PC2 (Exim)';
 
 // ── Dominio por defecto en el login ──────────────────────────────────────────
-$config['username_domain'] = getenv('MY_DOMAIN') ?: 'pc2.lab.local';
+// Deshabilitado: el usuario escribe solo su nombre (ej: alumno2) sin @dominio
+// $config['username_domain'] = '';
 
 // ── Plugins habilitados ───────────────────────────────────────────────────────
 $config['plugins'] = ['archive', 'zipdownload', 'markasjunk'];
