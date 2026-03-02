@@ -1,6 +1,6 @@
 # =====================================================================
 #  PC1 - docker-compose.yml
-#  Servicios: Postfix (SMTP) + Dovecot (IMAP) + Roundcube (Web)
+#  Servicios: Postfix (SMTP) + Dovecot (IMAP) + Roundcube (Web) + MariaDB
 # =====================================================================
 
 services:
@@ -47,6 +47,23 @@ services:
       - mailnet
 
   # ─────────────────────────────────────────────
+  #  MARIADB - Base de datos para Roundcube
+  # ─────────────────────────────────────────────
+  db:
+    image: mariadb:11
+    container_name: pc1_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: roundcube
+      MYSQL_DATABASE:      roundcubedb
+      MYSQL_USER:          roundcube
+      MYSQL_PASSWORD:      roundcube
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - mailnet
+
+  # ─────────────────────────────────────────────
   #  ROUNDCUBE - Cliente Web de Correo
   # ─────────────────────────────────────────────
   roundcube:
@@ -56,6 +73,12 @@ services:
     ports:
       - "80:80"
     environment:
+      ROUNDCUBEMAIL_DB_TYPE:      mysql
+      ROUNDCUBEMAIL_DB_HOST:      db
+      ROUNDCUBEMAIL_DB_PORT:      3306
+      ROUNDCUBEMAIL_DB_USER:      roundcube
+      ROUNDCUBEMAIL_DB_PASSWORD:  roundcube
+      ROUNDCUBEMAIL_DB_NAME:      roundcubedb
       ROUNDCUBEMAIL_SKIN:         elastic
       ROUNDCUBEMAIL_DEFAULT_HOST: dovecot
       ROUNDCUBEMAIL_DEFAULT_PORT: 143
@@ -64,8 +87,8 @@ services:
       MY_DOMAIN:                  ${MY_DOMAIN}
     volumes:
       - ./roundcube/config.inc.php:/var/roundcube/config/config.inc.php
-      - rcdata:/var/roundcube/db
     depends_on:
+      - db
       - dovecot
       - postfix
     networks:
@@ -89,5 +112,5 @@ networks:
 volumes:
   maildata:
     driver: local
-  rcdata:
+  dbdata:
     driver: local
