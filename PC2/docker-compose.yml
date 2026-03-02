@@ -53,6 +53,9 @@ services:
     image: roundcube/roundcubemail:latest
     container_name: pc2_roundcube
     restart: unless-stopped
+    # Fix: el volumen rcdata se crea como root; hay que cederlo a www-data
+    # antes de que Apache arranque para que SQLite pueda crear/escribir la DB.
+    entrypoint: ["/bin/sh", "-c", "chown -R www-data:www-data /var/roundcube/db && exec /docker-entrypoint.sh apache2-foreground"]
     ports:
       - "80:80"
     environment:

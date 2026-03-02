@@ -5,7 +5,7 @@
 // =============================================
 
 // Base de datos SQLite (no requiere contenedor extra)
-$config['db_dsnw'] = 'sqlite:////var/roundcube/db/roundcube.db?mode=0640';
+$config['db_dsnw'] = 'sqlite:////var/roundcube/db/roundcube.db';
 
 // ── Servidor IMAP (Dovecot) ───────────────────────────────────────────────────
 $config['imap_host'] = 'dovecot:143';
