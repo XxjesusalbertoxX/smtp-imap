@@ -53,6 +53,8 @@ smtp-imap/
 │   │   ├── dovecot.conf
 │   │   └── entrypoint.sh
 │   └── roundcube/
+│       ├── Dockerfile
+│       ├── docker-entrypoint-wrapper.sh
 │       └── config.inc.php
 └── PC2/                        ← Exim + Dovecot + Roundcube
     ├── .env.example
@@ -66,6 +68,8 @@ smtp-imap/
     │   ├── dovecot.conf
     │   └── entrypoint.sh
     └── roundcube/
+        ├── Dockerfile
+        ├── docker-entrypoint-wrapper.sh
         └── config.inc.php
 ```
 
@@ -397,13 +401,14 @@ Por ejemplo: `http://192.168.1.10`
 
 Usa las credenciales que configuraste en tu `.env`:
 
-| Campo    | Valor de ejemplo                |
-|----------|---------------------------------|
-| Usuario  | `alumno1@pc1.lab.local`         |
-| Contraseña | `mipass123`                   |
+| Campo      | Valor de ejemplo |
+|------------|-----------------|
+| Usuario    | `alumno1`        |
+| Contraseña | `mipass123`      |
 
-> El usuario debe incluir el `@` y tu dominio. Si pusiste `MAIL_USER=pedro`
-> y `MY_DOMAIN=pedro.correo.local`, entonces el login es `pedro@pedro.correo.local`.
+> Solo escribe el nombre de usuario **sin** el `@` ni el dominio. Roundcube
+> agrega el dominio automaticamente. Si pusiste `MAIL_USER=pedro`, el login
+> es simplemente `pedro`.
 
 ### 8.3 Enviar un correo al compañero
 
