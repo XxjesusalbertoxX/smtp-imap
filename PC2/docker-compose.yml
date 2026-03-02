@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  roundcube:
+    image: roundcube/roundcubemail:latest
+    container_name: roundcube
+    ports:
+      - "8080:80"
+    environment:
+      - ROUNDCUBEMAIL_DEFAULT_HOST=<PC1_IP_ADDRESS>   # Change this to PC1's IP address
+      - ROUNDCUBEMAIL_DEFAULT_PORT=143                # IMAP port on PC1
+      - ROUNDCUBEMAIL_SMTP_SERVER=<PC1_IP_ADDRESS>    # Change this to PC1's IP address
+      - ROUNDCUBEMAIL_SMTP_PORT=587                   # SMTP port on PC1
+    restart: unless-stopped
