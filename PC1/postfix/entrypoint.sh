@@ -24,7 +24,7 @@ echo "[postfix] Configurando transporte hacia ${PEER_DOMAIN} -> ${PEER_IP}"
 cat > /etc/postfix/transport <<EOF
 ${PEER_DOMAIN}    smtp:[${PEER_IP}]:25
 EOF
-postmap lmdb:/etc/postfix/transport
+postmap /etc/postfix/transport
 
 # ── 4. Asegurar que /etc/hosts resuelva los dominios ─────────────────────────
 echo "[postfix] Agregando entradas en /etc/hosts"
